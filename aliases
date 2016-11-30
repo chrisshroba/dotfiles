@@ -31,3 +31,7 @@ alias thist=thistory
 
 # Copy the current path to clipboard
 alias pwdc='pwd | pbcopy'
+
+# When the MacBook camera stops working, this should fix it
+alias fixcamera='sudo killall VDCAssistant'
+
