@@ -1,4 +1,8 @@
-
+# Move to projects directory
 alias proj=cd\ ~/Developer/projects
+
+# Move all screenshots to ss dir to unclutter Desktop
 alias mvss='mv ~/Desktop/Screen* ~/Desktop/ss/'
+
+# Open the lyrics of the current spotify track
 alias lyr="open \"http://www.google.com/search?q=$(osascript -e 'tell application "Spotify" to artist of current track as string & " - " & name of current track as string') lyrics&btnI\""
