@@ -1,0 +1,4 @@
+
+alias proj=cd\ ~/Developer/projects
+alias mvss='mv ~/Desktop/Screen* ~/Desktop/ss/'
+alias lyr="open \"http://www.google.com/search?q=$(osascript -e 'tell application "Spotify" to artist of current track as string & " - " & name of current track as string') lyrics&btnI\""
