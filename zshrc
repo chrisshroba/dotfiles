@@ -4,3 +4,4 @@ source $DOTFILES_DIR/funcs
 source $DOTFILES_DIR/aliases
 
 cd .
+
