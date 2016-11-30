@@ -6,3 +6,28 @@ alias mvss='mv ~/Desktop/Screen* ~/Desktop/ss/'
 
 # Open the lyrics of the current spotify track
 alias lyr="open \"http://www.google.com/search?q=$(osascript -e 'tell application "Spotify" to artist of current track as string & " - " & name of current track as string') lyrics&btnI\""
+
+# Switch Oh My Zsh theme
+alias pr2='sed -i.bak "s/agnoster/robbyrussell/g" ~/.zshrc && exec zsh'
+alias pr1='sed -i.bak "s/robbyrussell/agnoster/g" ~/.zshrc && exec zsh'
+
+# Clear Screen
+alias cl='clear'
+
+# Restart Zsh
+alias rz='exec zsh'
+
+# Modify these functions and automatically relaunch zsh with changes
+alias zshrc='vim $DOTFILES_DIR/zshrc && rz'
+alias funcs='vim $DOTFILES_DIR/funcs && rz'
+alias aliases='vim $DOTFILES_DIR/aliases && rz'
+
+# ls with one column
+alias ls1='ls -1'
+
+# History with timestamps
+alias thistory='fc -dl 1'
+alias thist=thistory
+
+# Copy the current path to clipboard
+alias pwdc='pwd | pbcopy'
