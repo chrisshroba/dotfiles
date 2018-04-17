@@ -1,20 +1,3 @@
-# Clear Screen
-c() {
-    for i in {1..$LINES}
-    do
-    	echo
-    done
-}
-
-# cd to commonly used directories (manually specified in ~/.chd_dirs)
-chd() {
-    select dir in `cat ~/.chd_dirs`
-    do
-        cd $dir
-        echo $dir
-        break
-    done
-}
 
 # Search Messages messages with pretty datetime
 t() {
