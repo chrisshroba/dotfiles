@@ -101,6 +101,13 @@ get_dir_of_this_script() {
 ################################### Aliases ####################################
 ################################################################################
 
+# Sometimes a program enables mouse reporting and exits without disabling it,
+# so whenever you move your mouse or click in the terminal, you'll see lots
+# of gibberish.  `mose_reporting_off` will turn this off and fix your
+# terminal.  `mouse_reporting_on` does the opposite, which is pretty much
+# never what you want.
+alias mouse_reporting_on='echo -e "\x1b[?1005h";echo -e "\x1b[?1003h"'
+alias mouse_reporting_off='echo -e "\x1b[?1005l";echo -e "\x1b[?1003l"'
 
 ################################################################################
 ############################ Environment Variables #############################
