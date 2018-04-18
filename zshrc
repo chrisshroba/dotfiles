@@ -1,10 +1,9 @@
 # Welcome to my Zshrc!
-# This is my default zshrc, which I use on all machines
-# I use.  At the end, I conditionally source a
-# Mac-specific or Linux-specific zshrc depending on
-# which OS I'm on, and then I source a local zshrc,
-# which contains anything that is specific to the
-# particular machine.
+# This is my default zshrc, which applies to all
+# machines I use.  At the end of this file, I
+# source a local zshrc if one is present at
+# $HOME/.zshrc.local.zsh.  This is for anything
+# that is specific to a single machine.
 #
 # This file is broken into the following sections:
 #  - Setting up Environment Variables
@@ -25,7 +24,7 @@
 # issue.
 cd $PWD
 
-# A few things this zshrc depends on:
+## A few things this zshrc depends on:
 
 # Functions to determine if this is a linux or mac system.  Useful for
 # determining which command to run when the command is different between linux
@@ -438,14 +437,5 @@ export LESS='-j .2 -R'
 #################################### Other #####################################
 ################################################################################
 
-# Source platform specific zshrc's
-# If OS name is Darwin, we're on Mac
-if uname -s | grep Darwin >/dev/null
-then
-    source_if_exists $DOTFILES_DIR/zshrc.mac.zsh
-# If OS name is Linux, we're on Linux
-elif uname -s | grep Linux >/dev/null
-then
-    source_if_exists $DOTFILES_DIR/zshrc.linux.zsh
-fi
+source_if_exists $HOME/.zshrc.local.zsh
 
