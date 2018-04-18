@@ -41,6 +41,11 @@ command_exists () {
     type "$1" &> /dev/null ;
 }
 
+# Source a file if it exists, otherwise no-op
+source_if_exists() {
+    [[ -f $1 ]] && source $@
+}
+
 # Search Messages messages with pretty datetime
 t() {
     sqlite3 ~/Library/Messages/chat.db "select is_from_me, datetime(date + strftime('%s','2001-01-01'), 'unixepoch'), handle.id, text from message, handle where handle_id=handle.rowid and text like '%$*%';"
@@ -123,9 +128,9 @@ export DOTFILES_DIR=get_dir_of_this_script
 # If OS name is Darwin, we're on Mac
 if uname -s | grep Darwin >/dev/null
 then
-    source $DOTFILES_DIR/zshrc.mac.zsh
+    source_if_exists $DOTFILES_DIR/zshrc.mac.zsh
 # If OS name is Linux, we're on Linux
 elif uname -s | grep Linux >/dev/null
 then
-    source $DOTFILES_DIR/zshrc.linux.zsh
+    source_if_exists $DOTFILES_DIR/zshrc.linux.zsh
 fi
