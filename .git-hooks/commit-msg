@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+INPUT_FILE=$1
+START_LINE=`head -n1 $INPUT_FILE`
+if echo $START_LINE | grep '\[.*\]' &>/dev/null
+then
+  # Success
+  : # no-op
+else
+  # Failure
+  echo "There was a problem committing.  Please ensure the commit message is of the form:"
+  echo "[Program whose config file this commit modifies] Description of the change made."
+  echo
+  echo "Example:"
+  echo 'git commit -m"[tmux] Added Prefix + m shortcut to mark a pane"'
+  echo
+  echo "To force this commit with your existing message, run:"
+  echo 'git commit --no-verify -m"<Message>"'
+  exit 1
+fi
