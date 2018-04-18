@@ -25,22 +25,58 @@
 # issue.
 cd $PWD
 
+# A few things this zshrc depends on:
+
+# Functions to determine if this is a linux or mac system.  Useful for
+# determining which command to run when the command is different between linux
+# and mac.
+function is_linux() {
+  uname -s | grep Linux >/dev/null
+}
+function is_mac() {
+  uname -s | grep Darwin >/dev/null
+}
+
+
 ################################################################################
 ############################## Third Party Tools ###############################
 ################################################################################
 
-# Add the Homebrew bin to my PATH
-# TODO: Move this to mac-specific file.
-export PATH=$PATH:/Users/chrisshroba/.brew/bin
+# (Mac-only) Add the Homebrew bin to my PATH
+if is_mac
+then
+  export PATH=$PATH:$HOME/.brew/bin
+fi
 
+### Oh My Zsh Configuration
 # Set up Oh My Zsh, which has SO many awesome features, including:
 # TODO: fill this out with Oh My Zsh features.
+# Check out zshthem.es for an interactive Oh My Zsh theme explorer
+ZSH_THEME="robbyrussell"
+# Don't ask me every two weeks if I want to update Oh My Zsh
+DISABLE_AUTO_UPDATE="false"
+# Disallow automatically correcting typos
+ENABLE_CORRECTION="false"
+# Show three red dots when it's working on autocomplete
+COMPLETION_WAITING_DOTS="false"
+# List of plugins to enable:
+#  - git: Provides tons of git-related aliases (i.e. gst=git status)
+#  - zsh-syntax-highlighting: Adds syntax highlighting as you type into the
+#    shell. Invalid commands are red, valid ones are green, quoted strings
+#    are yellow.
+plugins=(git zsh-syntax-highlighting)
+# Start up Oh My Zsh with above configuration
 source $ZSH/oh-my-zsh.sh
 
-# TODO: make this only run on mac
-[[ -s $(brew --prefix)/etc/profile.d/autojump.sh ]] && . $(brew --prefix)/etc/profile.d/autojump.sh
-# TODO: make this only run on linux
-. /usr/share/autojump/autojump.zsh
+# Setup Autojump for quickly jumping to directories
+# Dependency: Autojump (https://github.com/wting/autojump)
+if is_mac
+then
+  source $(brew --prefix)/etc/profile.d/autojump.sh
+elif is_linux
+then
+  source /usr/share/autojump/autojump.zsh
+fi
 
 # Enable kv-bash (A simple global key-val store)
 # Dependency: kv-bash (https://github.com/damphat/kv-bash)
@@ -55,8 +91,8 @@ bindkey '^T' fzf-completion
 # Don't use fzf completion for normal tab completion.
 bindkey '^I' $fzf_default_completion
 
-# TODO: Figure out why I need this
-export XDG_CONFIG_HOME=/usr/local/google/home/chrisshroba/.config
+# TODO: Revisit this in a week or so and see if it's necessary
+#export XDG_CONFIG_HOME=$HOME/.config
 
 ################################################################################
 ################################## Functions ###################################
@@ -71,12 +107,12 @@ chpwd () {
 # If you run `tmux` with no arguments, and an existing tmux session is already
 # running, attach to it. Otherwise run tmux normally.
 tmux () {
-	if [[ $# -eq 0 ]]
-	then
-		command tmux attach || command tmux
-	else
-		command tmux $@
-	fi
+  if [[ $# -eq 0 ]]
+  then
+    command tmux attach || command tmux
+  else
+    command tmux $@
+  fi
 }
 
 # Check if a command exists.  Works for executables on
@@ -104,21 +140,34 @@ o() {
     xargs google-chrome
 }
 
-# Search Messages messages with pretty datetime
-# TODO: fix line width
-# TODO: Move to mac file
-t() {
-    sqlite3 ~/Library/Messages/chat.db "select is_from_me, datetime(date + strftime('%s','2001-01-01'), 'unixepoch'), handle.id, text from message, handle where handle_id=handle.rowid and text like '%$*%';"
-}
+# (Mac-only) Search Messages messages with pretty datetime
+if is_mac
+then
+  t() {
+    sqlite3 ~/Library/Messages/chat.db \
+      "SELECT \
+        is_from_me, \
+        datetime(date + strftime('%s','2001-01-01'), 'unixepoch'), \
+        handle.id, \
+        text \
+       FROM \
+        message, \
+        handle \
+       WHERE \
+        handle_id=handle.rowid \
+       AND \
+        text LIKE '%$*%';"
+  }
+fi
 
 # Put the image that is currently on the clipboard on imgur
 # Dependency: pngpaste (https://github.com/jcsalterego/pngpaste)
 # Dependency: imguru (https://github.com/FigBug/imguru)
 imgurp () {
-	FILEPATH=$(mktemp).png
-	pngpaste $FILEPATH
-	imguru $FILEPATH
-	rm $FILEPATH
+        FILEPATH=$(mktemp).png
+        pngpaste $FILEPATH
+        imguru $FILEPATH
+        rm $FILEPATH
 }
 
 # Download a URL and save it as the same name as the file on the server
@@ -140,13 +189,13 @@ remote () {
 # (secretish because no auto_index)
 sdrop () {
     scp $1 chris@shroba.io:/var/www/html/sdrop/
-    ssh shroba "find /var/www/html/sdrop/* -exec chmod +r {} \;"
+    ssh shroba.io "find /var/www/html/sdrop/* -exec chmod +r {} \;"
 }
 
 # Send a file to shrobaserver to be served out of http://drop.shroba.io/
 drop () {
     scp $1 shroba:/var/www/html/drop/
-    ssh shroba "find /var/www/html/drop/* -exec chmod +r {} \;"
+    ssh shroba.io "find /var/www/html/drop/* -exec chmod +r {} \;"
 }
 
 # Get the directory this script resides in
@@ -223,7 +272,7 @@ alias zshrc="vim ~/.zshrc && exec zsh"
 alias vimrc="vim ~/.vimrc"
 alias hgrc="vim ~/.hgrc"
 alias tmuxrc="vim ~/.tmux.conf && \
-	      tmux source-file ~/.tmux.conf && \
+              tmux source-file ~/.tmux.conf && \
               blue 'Sourced tmux conf file.'"
 
 # Despite my main PAGER being less, I usually want hg to just cat its output, so
@@ -252,20 +301,23 @@ alias history="fc -nl 0"
 # colors!)
 # TODO: Make this platform agnostic; currently only works in an X session, so
 # pretty much only on Linux.
-alias invert_screen="xcalib -a -i"
+alias invert="xcalib -a -i"
 
 # Invert the screen and then turn it back for a gentler notification.
-alias flash_screen="invert_screen; sleep .2; invert_screen"
+alias flash="invert; sleep .1; invert"
 
-# TODO: move these to linux zshrc.
-alias pbcopy='xsel --clipboard --input'
-alias pbpaste='xsel --clipboard --output'
-alias open='xdg-open'
+# (Linux-only) Make pbcopy, pbpaste, open work like they do on Mac.
+if is_linux
+then
+  alias pbcopy='xsel --clipboard --input'
+  alias pbpaste='xsel --clipboard --output'
+  alias open='xdg-open'
+fi
 
 # Print all executables in the current PATH.  Useful for grepping for a command
 # when you know it follows a certain pattern but can't think of the specific
 # command.
-alias allpath=echo $PATH | sed "s/:/\n/g" | xargs ls -1
+alias allpath='echo $PATH | sed "s/:/\n/g" | xargs ls -1'
 # Print all directories in the PATH on separate lines. Useful for seeing what
 # directories are on your PATH in a more easy-to-read way.
 alias allpathdirs='echo $PATH | tr ":" "\n"'
@@ -291,12 +343,12 @@ alias ls=exa
 
 # ccat ensures that color is enabled, even when piping to another command.
 # Useful for when I'm piping to something like less.
-alias ccat="ccat --color=always"
+alias ccat="command ccat --color=always"
 
 # This is okay because ccat automatically detects if its output is not being
 # piped to a terminal, and doesn't colorize in that case, so this shouldn't
 # break anything that can't handle color.
-alias cat="ccat"
+alias cat="command ccat"
 
 # Colorized less.  This works for less'ing a file or piping uncolored output
 # into less and having it be colored.
@@ -331,6 +383,16 @@ alias cl4=clear-fourth
 # 'aserebryakov/vim-todo-lists' vim plugin for handling To Do lists.
 alias todo='vim ~/today.todo'
 
+# Copy the current path to clipboard
+# Dependency: alias pbcopy, if supporting linux (defined in this file)
+alias pwdc='pwd | pbcopy'
+
+# (Mac-only) When the MacBook camera stops working, this should fix it
+if is_mac
+then
+  alias fixcamera='sudo killall VDCAssistant'
+fi
+
 ################################################################################
 ############################ Environment Variables #############################
 ################################################################################
@@ -344,22 +406,6 @@ export PATH=$PATH:$HOME/.cargo/bin
 # Let $DOTFILES_DIR be the directory of this script.  Useful for sourcing other
 # files in this directory.
 export DOTFILES_DIR=$(get_dir_of_this_script)
-
-### Oh My Zsh Configuration
-# Check out zshthem.es for an interactive Oh My Zsh theme explorer
-ZSH_THEME="robbyrussell"
-# Don't ask me every two weeks if I want to update Oh My Zsh
-DISABLE_AUTO_UPDATE="false"
-# Disallow automatically correcting typos
-ENABLE_CORRECTION="false"
-# Show three red dots when it's working on autocomplete
-COMPLETION_WAITING_DOTS="false"
-# List of plugins to enable:
-#  - git: Provides tons of git-related aliases (i.e. gst=git status)
-#  - zsh-syntax-highlighting: Adds syntax highlighting as you type into the
-#    shell. Invalid commands are red, valid ones are green, quoted strings
-#    are yellow.
-plugins=(git zsh-syntax-highlighting)
 
 # The directory that contains my version controlled dotfiles
 # Dependency: get_dir_of_this_script function (defined in this file)
