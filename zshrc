@@ -179,7 +179,7 @@ curls () {
 # running `remote 1234` will set up an SSH tunnel to my server, and all
 # requests to http://remote.shroba.io will be passed through to my local
 # server while the tunnel is open.  Useful for showing somebody something
-# I'm working on, or for accesing a webapp from my phone.
+# I'm working on, or for accessing a webapp from my phone.
 remote () {
     ssh -nNTR 4100:localhost:$1 shroba
 }
