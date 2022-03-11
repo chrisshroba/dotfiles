@@ -1,5 +1,9 @@
 # Things I'd like to do
 
+# General
+
+  - Go back and see what is useful from my old dotfiles in the commit before
+    the one where this todo was introduced.
 # Zsh
 
   - 
