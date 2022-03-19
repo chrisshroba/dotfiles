@@ -138,3 +138,5 @@ retain-header () {
 
 HISTSIZE=10000000
 SAVEHIST=10000000
+
+date_for_filename() {date '+%Y%m%dT%H%M%S'}
