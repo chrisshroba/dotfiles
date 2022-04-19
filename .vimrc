@@ -259,6 +259,7 @@ let g:ale_fixers = {
 \   'typescript': ['prettier', 'eslint'],
 \   'vue': ['prettier', 'eslint'],
 \   'css': ['prettier'],
+\   'json': ['jq'],
 \   'python': ['black']
 \}
 let g:ale_python_black_options = '--line-length=80'
