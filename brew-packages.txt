@@ -1,0 +1,27 @@
+git, git version control
+bitwarden-cli, bitwarden password manager
+doctl, Digital Ocean CLI
+ffmpeg, video and audio utility
+go, GoLang
+gron, greppable json
+htop, prettier process monitoring
+iperf3, server-to-server speedtests
+jq, json utility
+lastpass-cli, lastpass password manager
+ncdu, TUI disk space usage analyzer
+nmap, Network exploration tool
+openssl@3, not sure why I installed this... TODO
+pdfgrep, make pdfs greppable
+pgcli, better postgres client
+pipx, for managing globally installed pip packages
+pstree, process tree viewer
+pyenv-virtualenv, enable pyenv to manage virtualenvs too
+spoof-mac, spoof the MAC address of this device
+terraform, for infrastructure provisioning
+the_silver_searcher, fast recursive file search
+tmux, terminal multiplexer
+tree, see all files in a directory recursively
+vim, editor
+watch, monitor output of a command
+youtube-dl, download youtube files
+zsh, shell
