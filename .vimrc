@@ -297,3 +297,10 @@ command! -bang -nargs=* GGrep
 nnoremap <C-i> :GGrep<CR>
 nnoremap diW diW"_x
 nnoremap <leader>vimrc :e ~/.vimrc<CR>
+
+" https://stackoverflow.com/a/5447712/2874789
+function! HiTabs()
+    syntax match TAB /\t/
+    hi TAB ctermbg=blue ctermfg=red
+endfunction
+au BufEnter,BufRead * call HiTabs()
