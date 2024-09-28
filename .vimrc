@@ -196,6 +196,8 @@ Plug 'mzlogin/vim-markdown-toc'
 
 Plug 'tpope/vim-eunuch'
 
+Plug 'NoahTheDuke/vim-just'
+
 call plug#end()
 
 " Run PlugInstall if there are missing plugins
