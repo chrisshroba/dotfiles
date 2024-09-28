@@ -6,11 +6,12 @@
     the one where this todo was introduced.
 # Zsh
 
-  - 
+  - Make prompt tell me what server I'm on
+  - Make prompt be powerline-like
 
 # Tmux
 
-  - 
+  -
 
 # Vim
 
@@ -20,7 +21,9 @@
   - Set where swap files go (in another directory)
   - Get commenting working
   - Figure out how to work with multiple files
-  - Figure out how to make the pane separator in vim 
+  - Figure out how to make the pane separator in vim
+  - When iterating through search results, show how many there are and which
+    I'm on, like "Result 3/8"
 
 # Other
 
