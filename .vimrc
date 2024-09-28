@@ -260,9 +260,11 @@ let g:ale_fixers = {
 \   'vue': ['prettier', 'eslint'],
 \   'css': ['prettier'],
 \   'json': ['jq'],
-\   'python': ['black']
+\   'python': ['black'],
 \}
 let g:ale_python_black_options = '--line-length=80'
+
+let g:ale_linters = {'rust': ['analyzer']}
 
 
 let g:ale_lint_on_enter = 1
